@@ -25,11 +25,11 @@ hostRecords=(
     "host-record=safesearch.pixabay.com,176.9.158.70"
 )
 ytSS=(
-   "cname=www.youtube.com,restrict.youtube.com"
-   "cname=m.youtube.com,restrict.youtube.com"
-   "cname=youtubei.googleapis.com,restrict.youtube.com"
-   "cname=youtube.googleapis.com,restrict.youtube.com"
-   "cname=www.youtube-nocookie.com,restrict.youtube.com"
+   "cname=www.youtube.com,restrictmoderate.youtube.com"
+   "cname=m.youtube.com,restrictmoderate.youtube.com"
+   "cname=youtubei.googleapis.com,restrictmoderate.youtube.com"
+   "cname=youtube.googleapis.com,restrictmoderate.youtube.com"
+   "cname=www.youtube-nocookie.com,restrictmoderate.youtube.com"
 )
 bingSS=(
     "cname=bing.com,www.bing.com,strict.bing.com"
