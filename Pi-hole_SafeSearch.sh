@@ -6,7 +6,7 @@
 YOUTUBE=True
 
 me=`basename "$0"`
-VERSION="1.6.1" # Fixed IP Address for Duckduckgo. Added SafeSearch for pixabay..., also fixed spelling error 
+VERSION="1.6.1" # Fixed IP Address for Duckduckgo. Added SafeSearch for pixabay..., also fixed spelling error
 file="/tmp/safesearch.txt"
 conf="/etc/dnsmasq.d/05-restrict.conf"
 url="https://www.google.com/supported_domains"
@@ -18,8 +18,9 @@ maxRuns=10
 ## Arrays
 # Host Records!!!
 hostRecords=(
-    "host-record=forcesafesearch.google.com,216.239.38.120"
-#    "host-record=safe.duckduckgo.com,54.241.17.246"
+   "host-record=forcesafesearch.google.com,216.239.38.120"
+    "host-record=safe.duckduckgo.com,52.142.126.100"
+    "host-record=restrict.youtube.com,216.239.38.120"
     "host-record=restrictmoderate.youtube.com,216.239.38.119"
     "host-record=strict.bing.com,204.79.197.220"
     "host-record=safesearch.pixabay.com,176.9.158.70"
@@ -70,7 +71,7 @@ logger() {
         echo [`date '+%Y-%m-%d %H:%M:%S:%3N'`]: "$*"
     }
     all() {
-        write "$*" 
+        write "$*"
         print "$*"
     }
     pass() {
@@ -87,7 +88,7 @@ logger() {
             print FLUSHING LOG
             rm -rf $log
         fi
-        write STARTED 
+        write STARTED
     }
     end() {
         write STOPPED
@@ -101,7 +102,7 @@ logger() {
     "$@"
 }
 ## Check Sudo
-if [ "$EUID" -ne 0 ];then 
+if [ "$EUID" -ne 0 ];then
     echo "Please run this script with sudo!"
     exit 1
 fi
@@ -116,7 +117,7 @@ silently() {
 preCheck() {
     # Check for sudo rights
     checkSudo
-    
+
     # Is there an old file?
     if [ -f "$file" ]; then
         logger all Removing "$file"
@@ -131,7 +132,7 @@ generate() {
 
     # Append File Header
     echo "# $file generated on $(date '+%m/%d/%Y %H:%M') by $(hostname)" >> "${file}"
-    echo "# Google SafeSearch Implementation" >> "${file}" 
+    echo "# Google SafeSearch Implementation" >> "${file}"
 
     # Add host records
     for line in "${hostRecords[@]}"; do
@@ -150,28 +151,28 @@ generate() {
     logger all ''$count' TLDs'
     logger all ''$total' Domains'
 
-    # YouTube SafeSearch 
+    # YouTube SafeSearch
     if [ "$YOUTUBE" == "True" ]; then
         for line in "${ytSS[@]}"
             do echo "$line"  >> "${file}"
         done
     fi
-    
+
     # DuckDuckGo SafeSearch
-#    for line in "${duckduckgoSS[@]}"
-#        do echo "$line" >> "${file}"
-#    done
-    
+    for line in "${duckduckgoSS[@]}"
+        do echo "$line" >> "${file}"
+    done
+
     # Bing Strict Setting
     for line in "${bingSS[@]}"
         do echo "$line"  >> "${file}"
     done
-    
+
     # Pixabay
     for line in "${pixabaySS[@]}"
         do echo "$line"  >> "${file}"
     done
-    
+
     # Enable In Hosts and Pi-hole
     if [ "$ENABLE" == "True" ]; then
         logger all 'ENABLING SAFESEARCH FOR PI-HOLE'
@@ -181,7 +182,7 @@ generate() {
         else
             cp -R "$file" "$conf"
         fi
-        for host in "${ssHosts[@]}"; do 
+        for host in "${ssHosts[@]}"; do
             if ! grep -Fxq "$host" "$hosts"; then
                 echo "$host" >> "$hosts"
             fi
@@ -192,7 +193,7 @@ generate() {
         silently pihole --regex "${REGEX[@]}"
         # We do not need to do "pihole restartdns"
         # The above commands reload it every time...
-    fi   
+    fi
 }
 
 main() {
@@ -213,8 +214,8 @@ help() {
     # Log Invalid Arguments
     if [ ! -z "$*" ]; then
         # https://linuxconfig.org/how-do-i-print-all-arguments-submitted-on-a-command-line-from-a-bash-script
-        args=("$@") 
-        logger error INVALID ARGUMENT: "${args[@]}" 
+        args=("$@")
+        logger error INVALID ARGUMENT: "${args[@]}"
         sleep 1
         clear
     fi
@@ -223,7 +224,7 @@ help() {
     logger pass "$me version $version
     Usage: $me [options]
     Example: '$me --web'
-    
+
     -e, --enable  Enable SafeSearch
     -d, --disable Disable SafeSearch
     -w, --web     For use with PHP Script
