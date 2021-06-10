@@ -18,8 +18,8 @@ maxRuns=10
 ## Arrays
 # Host Records!!!
 hostRecords=(
-   "host-record=forcesafesearch.google.com,216.239.38.120"
-    "host-record=safe.duckduckgo.com,52.142.126.100"
+    "host-record=forcesafesearch.google.com,216.239.38.120"
+#    "host-record=safe.duckduckgo.com,52.142.126.100"
     "host-record=restrict.youtube.com,216.239.38.120"
     "host-record=restrictmoderate.youtube.com,216.239.38.119"
     "host-record=strict.bing.com,204.79.197.220"
@@ -159,9 +159,9 @@ generate() {
     fi
 
     # DuckDuckGo SafeSearch
-    for line in "${duckduckgoSS[@]}"
-        do echo "$line" >> "${file}"
-    done
+#    for line in "${duckduckgoSS[@]}"
+#        do echo "$line" >> "${file}"
+#    done
 
     # Bing Strict Setting
     for line in "${bingSS[@]}"
